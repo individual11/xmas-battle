@@ -11,7 +11,7 @@ function init(){
 
 	$left.animate({width:'50%'}, 500);
 	$right.animate({width:'50%'}, 500);
-	$info.delay(300).fadeIn();
+	$info.parent().delay(300).fadeIn();
 }
 
 function initDesktop(){
@@ -140,8 +140,13 @@ $(function(){
 	// SHARED
 	/////////
 
-	socket.on('error', function(data){
-		console.log('error detected, should do something about it');
+	socket.on('error', function(){
+		$info.parent().fadeOut('fast', function(e){
+			$info.text('Error')
+			$secondary.text('Try refreshing the page');
+			$(this).fadeIn('fast');
+		});
+		console.error('ERROR FOUND, SEE BELOW');
 	});
 
 	//kicks off the game (on the desktops)

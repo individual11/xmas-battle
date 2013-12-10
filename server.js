@@ -2,12 +2,15 @@
 
 
 TODO:
-- add error support for not getting socket working
-- make it so if a desktop joins after the game is in progress, they jump right into watching
+
+*NOW
 - make it so even teams are not neccesary
 - better mobile experience with full-screen (iphone)
 - compress js from grunt
 
+*SOON
+- redo server.js architecture completely
+- rename stuff in index.ejs to make more sense (check in app.js to change names as well)
 - logo
 - add "about" somewhere
 - create rooms (name-space)
@@ -125,11 +128,29 @@ io.sockets.on('connection', function (socket) {
 	socket.on('join', function(data){
 		socket.join(data.type);//works for desktop, mobile, left or right
 
-		//make sure team rooms have people in them before starting
-		if(clientsInRoom('left') && clientsInRoom('right') && !isPlaying){
-			io.sockets.emit('game-start', {});
-			isPlaying = true;
+		if(data.type == 'desktop'){
+
+			//setup desktop-only events here
+
+			//if the desktop is late to the game, go ahead and get him started
+			if(isPlaying){
+				socket.emit('game-start', {});
+			}
+		}else if(data.type == 'mobile'){
+			//setup mobile events only here
+
+		}else{
+			//make sure team rooms have people in them before starting
+			if(clientsInRoom('left') && clientsInRoom('right') && !isPlaying){
+				io.sockets.emit('game-start', {});
+				isPlaying = true;
+			}else if(isPlaying){
+				socket.emit('game-start', {});//let the new device know it's go time
+			}
+
 		}
+
+		
 
 		console.log(data.type + " - joined");
 	});
