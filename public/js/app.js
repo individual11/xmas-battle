@@ -4,7 +4,7 @@ var $left = $('#left'),
 	$info = $('#info'),
 	$secondary = $('.secondary');
 
-var side;
+var side, isPlaying;
 
 function init(){
 	$info.html('Red<br /><p class="solid">vs.</p>Green');
@@ -83,6 +83,7 @@ $(function(){
 
 	//kicks off the game (on the desktops)
 	socket.on('game-start', function(data){
+		isPlaying = true;
 		$info.parent().fadeOut('fast', function(e){
 			$secondary.text('It\'s on!');
 			$(this).fadeIn('fast');
@@ -91,7 +92,7 @@ $(function(){
 
 	//ends the game (on the desktops)
 	socket.on('game-over', function(data){
-		console.log('over');
+		isPlaying = false;
 		var winner = (data.winner == 'left')? 'red':'green';
 		if(data.winner == 'left'){
 			$left.animate({width:'100%'}, 50);
@@ -111,9 +112,10 @@ $(function(){
 
 	//receiving an update from the server about who's winning
 	socket.on("change", function(data){
-		console.log('change');
-		$left.stop().animate({width:String(data.left + "%")},100);
-		$right.stop().animate({width:String(data.right + "%")},100);
+		if(isPlaying){
+			$left.stop().animate({width:String(data.left + "%")},100);
+			$right.stop().animate({width:String(data.right + "%")},100);
+		}
 	});
 
 	//the winning mobile devices are notified
