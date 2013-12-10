@@ -2,9 +2,10 @@
 
 
 TODO:
-- make it so the mobile device realizes we are waiting on other team member
 - make it so if a desktop joins after the game is in progress, they jump right into watching
 - better mobile experience with full-screen (iphone)
+- compress js from grunt
+
 - logo
 - add "about" somewhere
 - create rooms (name-space)
@@ -122,7 +123,7 @@ io.sockets.on('connection', function (socket) {
 		socket.join(data.type);//works for desktop, mobile, left or right
 
 		if(clientsInRoom('left') && clientsInRoom('right') && !isPlaying){
-			io.sockets.in('desktop').emit('game-start', {});
+			io.sockets.emit('game-start', {});
 			isPlaying = true;
 		}
 

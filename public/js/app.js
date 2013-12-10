@@ -57,8 +57,8 @@ function sideSelected(selectedSide){
 		}
 		
 		$info.parent().fadeOut('fast', function(e){
-			$secondary.text('');
-			$info.text('Tap!');
+			$secondary.text('Waiting for other players to join');
+			$info.text('');
 			$(this).fadeIn('fast');
 		});
 
@@ -72,22 +72,13 @@ function sideSelected(selectedSide){
 //shortcut for document.ready
 $(function(){
 
+	////////////////
+	// FOR DESKTOP
+	///////////////
+
 	//initialize all desktops from the server
 	socket.on('init-desktop', function(data){
 		initDesktop();
-	});
-	//initialize all the mobile devices
-	socket.on('init-mobile', function(data){
-		initMobile();
-	});
-
-	//kicks off the game (on the desktops)
-	socket.on('game-start', function(data){
-		isPlaying = true;
-		$info.parent().fadeOut('fast', function(e){
-			$secondary.text('It\'s on!');
-			$(this).fadeIn('fast');
-		});
 	});
 
 	//ends the game (on the desktops)
@@ -118,6 +109,15 @@ $(function(){
 		}
 	});
 
+	////////////////
+	// FOR MOBILE
+	///////////////
+
+	//initialize all the mobile devices
+	socket.on('init-mobile', function(data){
+		initMobile();
+	});
+
 	//the winning mobile devices are notified
 	socket.on("winner", function(data){
 		$('body').unbind('touchstart');
@@ -135,7 +135,31 @@ $(function(){
 		});
 	});
 	
-	//let the server know what device I am
+
+	//////////
+	// SHARED
+	/////////
+
+	//kicks off the game (on the desktops)
+	socket.on('game-start', function(data){
+		isPlaying = true;
+
+		if(type == 'desktop'){
+			$info.parent().fadeOut('fast', function(e){
+				$secondary.text('It\'s on!');
+				$(this).fadeIn('fast');
+			});
+		}else{//is mobile
+			$info.parent().fadeOut('fast', function(e){
+				$secondary.text('');
+				$info.text('Tap!');
+				$(this).fadeIn('fast');
+			});
+		}
+		
+	});
+
+	//let the server know what device I am when joining
 	if(type == 'desktop'){
 		initDesktop();
 		socket.emit('join', {type:'desktop'});
