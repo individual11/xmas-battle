@@ -2,12 +2,13 @@
 
 
 TODO:
+- make it so the mobile device realizes we are waiting on other team member
 - make it so if a desktop joins after the game is in progress, they jump right into watching
-- better mobile experience with full-screen
+- better mobile experience with full-screen (iphone)
 - logo
-- create rooms (name-space)
 - add "about" somewhere
-- 
+- create rooms (name-space)
+- text shadow is sucking on mobile devices
 
 */
 
