@@ -1,12 +1,13 @@
 {
-  "version": "0.0.0",
-  "description": "tug of war using sockets",
+  "name": "xmas-battle",
+  "subdomain": "xmas-battle",
+  "version": "0.0.1",
+  "description": "tug of war using sockets, for xmas",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": "",
+  "repository": "https://github.com/individual11/xmas-battle",
   "author": "david@individual11.com",
   "license": "MIT",
   "readmeFilename": "README.md",
@@ -23,7 +24,5 @@
   },
   "engines": {
     "node": "0.8.x"
-  },
-  "name": "xmas-battle",
-  "subdomain": "xmas-battle"
+  }
 }
