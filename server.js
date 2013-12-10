@@ -3,6 +3,7 @@
 
 TODO:
 - make it so if a desktop joins after the game is in progress, they jump right into watching
+- make it so even teams are not neccesary
 - better mobile experience with full-screen (iphone)
 - compress js from grunt
 
