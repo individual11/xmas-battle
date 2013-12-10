@@ -1,7 +1,7 @@
 {
   "name": "xmas-battle",
   "subdomain": "xmas-battle",
-  "version": "0.0.1",
+  "version": "0.0.1-2",
   "description": "tug of war using sockets, for xmas",
   "main": "server.js",
   "scripts": {

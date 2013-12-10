@@ -2,6 +2,7 @@
 
 
 TODO:
+- add error support for not getting socket working
 - make it so if a desktop joins after the game is in progress, they jump right into watching
 - make it so even teams are not neccesary
 - better mobile experience with full-screen (iphone)
@@ -27,7 +28,7 @@ var port, socket;
 
 //check environment
 if(process.env.NODE_ENV == 'production'){
-	port = 8080;
+	port = 80;
 	socket = 'http://xmas-battle.jit.su:' + port;
 }else{
 	port = 1337;
