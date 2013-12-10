@@ -5,6 +5,7 @@ TODO:
 - fix bug where sometimes front end still gets updates after winner announced
 - make it so a member on each side has to join before the game can start
 - better mobile experience with full-screen
+- logo
 - create rooms (name-space)
 - add "about" somewhere
 - 

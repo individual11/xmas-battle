@@ -1,6 +1,3 @@
-//connect to our socket server
-var socket = io.connect('http://fry.local:1337/');
-
 //setup some common vars
 var $left = $('#left'),
 	$right = $('#right'),
@@ -94,13 +91,14 @@ $(function(){
 
 	//ends the game (on the desktops)
 	socket.on('game-over', function(data){
+		console.log('over');
 		var winner = (data.winner == 'left')? 'red':'green';
 		if(data.winner == 'left'){
-			$left.animate({width:'100%'}, 500);
-			$right.animate({width:'0%'}, 500);
+			$left.animate({width:'100%'}, 50);
+			$right.animate({width:'0%'}, 50);
 		}else{
-			$right.animate({width:'100%'}, 500);
-			$left.animate({width:'0%'}, 500);
+			$right.animate({width:'100%'}, 50);
+			$left.animate({width:'0%'}, 50);
 		}
 
 		//update the copy
@@ -113,6 +111,7 @@ $(function(){
 
 	//receiving an update from the server about who's winning
 	socket.on("change", function(data){
+		console.log('change');
 		$left.stop().animate({width:String(data.left + "%")},100);
 		$right.stop().animate({width:String(data.right + "%")},100);
 	});
