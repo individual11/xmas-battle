@@ -6010,6 +6010,7 @@ body {
   background-color: rgba(255, 0, 0, 0);
   position: absolute;
   pointer-events: none;
+  display: none;
 }
 .info .solid {
   color: black;
@@ -6027,7 +6028,6 @@ body {
   margin-right: auto;
   margin-top: 80px;
   text-align: center;
-  display: none;
   font-family: 'Luckiest Guy';
   font-size: 4em;
   -webkit-text-stroke: 3px black;
