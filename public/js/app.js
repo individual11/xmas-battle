@@ -140,6 +140,10 @@ $(function(){
 	// SHARED
 	/////////
 
+	socket.on('error', function(data){
+		console.log('error detected, should do something about it');
+	});
+
 	//kicks off the game (on the desktops)
 	socket.on('game-start', function(data){
 		isPlaying = true;

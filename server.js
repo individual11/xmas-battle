@@ -62,6 +62,11 @@ function reset(){
 
 }
 
+//////////////////////
+// Socket.io helpers
+/////////////////////
+
+//removes all clients from given room
 function emptyRoom(roomName){
 	var clients = io.sockets.clients(roomName);
 
@@ -70,13 +75,15 @@ function emptyRoom(roomName){
     }
 }
 
+//returns number of clients within a room
 function clientsInRoom(roomName){
 	return io.sockets.clients(roomName).length;
 }
 
-// used for loging
-var log = new Array();
-
+//returns true if client is in room, else false
+function clientIsInRoom(client, room){
+	return false;
+}
 
 app.configure(function(){
 	// I need to access everything in '/public' directly
@@ -95,7 +102,7 @@ app.configure(function(){
 // logs every request
 app.use(function(req, res, next){
 	// keep track of every request in the array
-	log.push({method:req.method, url: req.url, device: req.device});
+	console.log({method:req.method, url: req.url, device: req.device});
 
 	// goes onto the next function in line
 	next();
@@ -103,12 +110,6 @@ app.use(function(req, res, next){
 
 app.get("/", function(req, res){
 	res.render('index', {type:req.device.type, socketPath:socket});
-});
-
-
-//sends back the log as JSON data
-app.get('/log', function(req, res){
-	res.json(log);
 });
 
 //reset the numbers
@@ -124,6 +125,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('join', function(data){
 		socket.join(data.type);//works for desktop, mobile, left or right
 
+		//make sure team rooms have people in them before starting
 		if(clientsInRoom('left') && clientsInRoom('right') && !isPlaying){
 			io.sockets.emit('game-start', {});
 			isPlaying = true;
