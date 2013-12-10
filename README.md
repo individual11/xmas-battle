@@ -11,7 +11,7 @@ $ cd xmas-battle
 $ npm install
 ```
 
-You will want to change some stuff in the server.js, (which I will move to a config one of these days.)
+You will want to change some stuff in the server.js before starting it, (which I will move to a config one of these days.)
 
 
 
