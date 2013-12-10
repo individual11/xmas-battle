@@ -1,0 +1,29 @@
+{
+  "version": "0.0.0",
+  "description": "tug of war using sockets",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": "",
+  "author": "david@individual11.com",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "ejs": "~0.8.5",
+    "express": "~3.4.6",
+    "socket.io": "~0.9.16",
+    "express-device": "~0.3.7"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "engines": {
+    "node": "0.8.x"
+  },
+  "name": "xmas-battle",
+  "subdomain": "xmas-battle"
+}

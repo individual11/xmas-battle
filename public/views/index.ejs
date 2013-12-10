@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Socket Test</title>
+        <meta name="description" content="just testing out the notification stuff">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+
+        <link href='//fonts.googleapis.com/css?family=Luckiest+Guy' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/core.css">
+    </head>
+    <body>
+
+   		<div class="info">
+   			<div id="info" class="display tree"></div>
+   			<div class="display secondary"></div>
+   		</div>
+    	<div id="left" class="side left-side"></div>
+    	<div id="right" class="side right-side"></div>
+    
+    <!-- jQuery --> 
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+
+    <!-- socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+    var type = "<%= type%>";
+
+    //connect to our socket server
+	var socket = io.connect('<%= socketPath%>');
+    </script>
+
+	<script src="js/app.js"></script><!-- in public/js/ -->
+
+    </body>
+</html>

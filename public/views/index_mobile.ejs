@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Notification Test</title>
+        <meta name="description" content="just testing out the notification stuff">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/core.css">
+    </head>
+    <body>
+ 
+
+    <div class="container">
+
+    	<!-- Main component for a primary marketing message or call to action -->
+    	<div class="jumbotron">
+        	<h1>Socket Example</h1>
+       		<p>Doing some socket example tests.</p>
+       		<div class="row">
+       			<div class="col-md-4 col-sm-6 col-xs-6">
+       				<h3>All Chatter<button id="clearAllPosts" type="button" class="btn btn-danger btn-xs pull-right">clear</button></h3>
+       				<div id="allPosts" class="form-control"></div>
+					    <div class="input-group">
+					      <input id="blast" type="text" class="form-control" placeholder="send something to everyone">
+					      <span class="input-group-btn">
+					        <button id="send" class="btn btn-success" type="button">Send</button>
+					      </span>
+					    </div><!-- /input-group -->
+       				
+       			</div>
+       		</div>
+        
+        
+		</div>
+	</div>
+    
+    <!-- jQuery --> 
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+
+    <!-- socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+	<script>
+
+		//connect to our socket server
+		var socket = io.connect('http://127.0.0.1:1337/');
+
+
+		//shortcut for document.ready
+		$(function(){
+
+			//setup some common vars
+			var $blastField = $('#blast'),
+				$allPostsTextArea = $('#allPosts'),
+				$clearAllPosts = $('#clearAllPosts'),
+				$sendBlastButton = $('#send');
+
+
+			//SOCKET STUFF
+			socket.on("blast", function(data){
+				var copy = $allPostsTextArea.html();
+				$allPostsTextArea.html('<p>' + copy + data.msg + "</p>");
+				$allPostsTextArea.scrollTop($allPostsTextArea[0].scrollHeight - $allPostsTextArea.height());
+				//.css('scrollTop', $allPostsTextArea.css('scrollHeight'));
+
+			});
+			
+			$clearAllPosts.click(function(e){
+				$allPostsTextArea.text('');
+			});
+
+			$sendBlastButton.click(function(e){
+
+				var blast = $blastField.val();
+				if(blast.length){
+					socket.emit("blast", {msg:blast}, 
+						function(data){
+							$blastField.val('');
+						});
+				}
+
+
+			});
+
+			$blastField.keydown(function (e){
+			    if(e.keyCode == 13){
+			        $sendBlastButton.trigger('click');//lazy, but works
+			    }
+			})
+			
+
+			
+		});
+
+	</script
+
+    </body>
+</html>
