@@ -6,8 +6,9 @@ You can demo it [here](http://xmas-batter.jit.su).
 ###Installing
 
 ```
-git://github.com/individual11/xmas-battle.git
-npm install
+$ git clone git://github.com/individual11/xmas-battle.git
+$ cd xmas-battle
+$ npm install
 ```
 
 You will want to change some stuff in the server.js, (which I will move to a config one of these days.)
