@@ -2,8 +2,7 @@
 
 
 TODO:
-- fix bug where sometimes front end still gets updates after winner announced
-- make it so a member on each side has to join before the game can start
+- make it so if a desktop joins after the game is in progress, they jump right into watching
 - better mobile experience with full-screen
 - logo
 - create rooms (name-space)
@@ -67,6 +66,10 @@ function emptyRoom(roomName){
     }
 }
 
+function clientsInRoom(roomName){
+	return io.sockets.clients(roomName).length;
+}
+
 // used for loging
 var log = new Array();
 
@@ -117,8 +120,9 @@ io.sockets.on('connection', function (socket) {
 	socket.on('join', function(data){
 		socket.join(data.type);//works for desktop, mobile, left or right
 
-		if((data.type == 'left' || data.type == 'right') && !isPlaying){
+		if(clientsInRoom('left') && clientsInRoom('right') && !isPlaying){
 			io.sockets.in('desktop').emit('game-start', {});
+			isPlaying = true;
 		}
 
 		console.log(data.type + " - joined");
@@ -126,45 +130,46 @@ io.sockets.on('connection', function (socket) {
 
 	//when a mobile device sends a tap notification
 	socket.on('tap', function(data){
-
-		//decide what team they are on and adjust the score
-		if(data.side == 'left'){
-			leftTap++;
-			rightTap--;
-		}else if(data.side == 'right'){
-			rightTap++;
-			leftTap--;
-		}
-
-		//make sure the taps never drop below zero
-		if(leftTap < 0) leftTap = 0;
-		if(rightTap < 0) rightTap = 0;
-
-
-		//evaluate the percentage between left/right
-		var totalTap = leftTap + rightTap;
-		left = Math.round((leftTap/totalTap)*100);
-		right = 100-left;
-
-		//decide of the match is over or what
-		if(right == 100 || left == 100){
-			var winningSide = (right==100)? 'right':'left';
-			io.sockets.in('desktop').emit('game-over', {winner:winningSide});
-
-			if(winningSide == 'right'){
-				io.sockets.in('right').emit('winner', {winner:winningSide});
-				io.sockets.in('left').emit('loser', {winner:winningSide});
-			}else{
-				io.sockets.in('left').emit('winner', {winner:winningSide});
-				io.sockets.in('right').emit('loser', {winner:winningSide});
+		if(isPlaying){
+			//decide what team they are on and adjust the score
+			if(data.side == 'left'){
+				leftTap++;
+				rightTap--;
+			}else if(data.side == 'right'){
+				rightTap++;
+				leftTap--;
 			}
 
-			reset();//reset all the variables, which fires back to all the clients as well
-		}else{
-			//let the desktops know the score
-			io.sockets.in('desktop').emit('change', {left:left, right:right});
+			//make sure the taps never drop below zero
+			if(leftTap < 0) leftTap = 0;
+			if(rightTap < 0) rightTap = 0;
+
+
+			//evaluate the percentage between left/right
+			var totalTap = leftTap + rightTap;
+			left = Math.round((leftTap/totalTap)*100);
+			right = 100-left;
+
+			//decide of the match is over or what
+			if(right == 100 || left == 100){
+				isPlaying = false;
+				var winningSide = (right==100)? 'right':'left';
+				io.sockets.in('desktop').emit('game-over', {winner:winningSide});
+
+				if(winningSide == 'right'){
+					io.sockets.in('right').emit('winner', {winner:winningSide});
+					io.sockets.in('left').emit('loser', {winner:winningSide});
+				}else{
+					io.sockets.in('left').emit('winner', {winner:winningSide});
+					io.sockets.in('right').emit('loser', {winner:winningSide});
+				}
+
+				reset();//reset all the variables, which fires back to all the clients as well
+			}else{
+				//let the desktops know the score
+				io.sockets.in('desktop').emit('change', {left:left, right:right});
+			}
 		}
-		
 	});
 
 });
