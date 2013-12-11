@@ -169,13 +169,17 @@ $(function(){
 	});
 
 	//let the server know what device I am when joining
-	if(type == 'desktop'){
-		initDesktop();
-		socket.emit('join', {type:'desktop'});
-	}else{
-		initMobile();
-		socket.emit('join', {type:'mobile'});
-	}
+	socket.on('ready', function(data){
+		console.log('ready ' + type);
+		if(type == 'desktop'){
+			initDesktop();
+			socket.emit('join', {type:'desktop'});
+		}else{
+			initMobile();
+			socket.emit('join', {type:'mobile'});
+		}
+	});
+	
 
 	// $sendBlastButton.click(function(e){
 

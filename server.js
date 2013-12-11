@@ -38,6 +38,8 @@ if(process.env.NODE_ENV == 'production'){
 	socket = 'http://fry.local:' + port;
 }
 
+console.log({socket:socket});
+
 
 //used for game
 var left = 50,
@@ -124,6 +126,14 @@ app.get('/reset', function(req, res){
 //this event is fired whenever any device connects to the socket
 io.sockets.on('connection', function (socket) {
 
+	console.log('user connected');
+	socket.emit('ready', {});
+
+	//keep track of when user disconnects
+	socket.on('disconnect', function () {
+		console.log('user disconnected');
+	});
+
 	//put the right people in the right rooms
 	socket.on('join', function(data){
 		socket.join(data.type);//works for desktop, mobile, left or right
@@ -154,6 +164,8 @@ io.sockets.on('connection', function (socket) {
 
 		console.log(data.type + " - joined");
 	});
+
+
 
 	//when a mobile device sends a tap notification
 	socket.on('tap', function(data){
